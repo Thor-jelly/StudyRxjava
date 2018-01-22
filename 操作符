@@ -1,0 +1,327 @@
+#创建操作符
+
+```
+  /**
+     * 快速创建一个被观察者对象
+     * 每隔指定时间 就发送 事件，可指定发送的数据的数量
+     * 作用类似于interval（），但可指定发送的数据的数量
+     */
+    private void rxjavaIntervalRange() {
+// 参数1 = 事件序列起始点；
+        // 参数2 = 事件数量；
+        // 参数3 = 第1次事件延迟发送时间；
+        // 参数4 = 间隔时间数字；
+        // 参数5 = 时间单位
+        Observable.intervalRange(3, 10, 2, 1, TimeUnit.SECONDS)
+                // 该例子发送的事件序列特点：
+                // 1. 从3开始，一共发送10个事件；
+                // 2. 第1次延迟2s发送，之后每隔2秒产生1个数字（从0开始递增1，无限个）
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //"开始采用subscribe连接"
+                    }
+                    // 默认最先调用复写的 onSubscribe（）
+
+                    @Override
+                    public void onNext(Long value) {
+                        //"接收到了事件"+ value
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //"对Error事件作出响应"
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //"对Complete事件作出响应"
+                    }
+
+                });
+    }
+
+    /**
+     * 快速创建一个被观察者对象
+     * 每隔指定时间就发送事件
+     * 发送事件序列 是从0开始，无限递增1的整数序列(即事件从0、1、2、3、4。。。。。)
+     */
+    private void rxjavaInterval() {
+        // 注：interval默认在computation调度器上执行
+        // 也可自定义指定线程调度器（第3个参数）：interval(long,TimeUnit,Scheduler)
+        /*
+            参数1 = 第1次延迟时间；
+            参数2 = 间隔时间数字；
+            参数3 = 时间单位；
+        */
+        Observable.interval(3, 1, TimeUnit.SECONDS)
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        //"接收到了事件"+ aLong
+                        /*
+                            即  "接收到了事件"+ 0
+                                "接收到了事件"+ 1
+                                "接收到了事件"+ 2
+                                。。。。。
+                         */
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 延迟指定时间后，发送一个数值0--Long类型
+     * --注：timer操作符默认运行在一个新线程上
+     * --也可自定义线程调度器（第3个参数）：timer(long,TimeUnit,Scheduler)
+     */
+    private void rxjavaTimer() {
+        //本质 = 延迟指定时间后，调用一次onNext(0)
+        //一般用于检测
+        //例子 = 延迟2s后，发送一个long类型数值
+        Observable.timer(2, TimeUnit.SECONDS)
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        //接收到了事件"+ aLong
+                        //aLong = 0L
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 直到有观察者observer订阅时，才动态创建被观察者对象 并 发送事件
+     * 每次订阅后，都会得到一个刚创建的最新的observable对象，这可以确保observable对象里的数据是最新的
+     */
+    private void rxjavaDefer() {
+        //第一次对i赋值
+        Integer i = 10;
+        //通过defer定义被观察者对象
+        //此时被观察者对象还未被创建
+        final Integer finalI = i;
+        Observable<Integer> observable = Observable.defer(new Callable<ObservableSource<? extends Integer>>() {
+            @Override
+            public ObservableSource<? extends Integer> call() throws Exception {
+                return Observable.just(finalI);
+            }
+        });
+
+        //第二次对i赋值
+        i = 15;
+
+        //开始订阅
+        observable.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                //接收到的整数是"+ integer
+                //15
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 该方法创建的被观察者对象发送事件的特点： 不发送任何事件
+     */
+    private void rxjavaNever() {
+        Observable.never();
+        //即观察者接收到数据后什么都不调用
+    }
+
+
+    /**
+     * 该方法创建的被观察者对象发送事件的特点：仅发送Error事件，直接通知异常
+     */
+    private void rxjavaError() {
+        Observable.error(new RuntimeException());
+        //即观察者接收到数据后会直接调用onError
+    }
+
+    /**
+     * 该方法创建的被观察者对象发送事件的特点：仅发送Complete事件，直接通知完成
+     */
+    private void rxjavaEmpty() {
+        Observable.empty();
+        //即观察者接收到数据后会直接调用onComplete
+    }
+
+    /**
+     * 数组遍历
+     */
+    private void rxjavaFromIterable() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        Observable.fromIterable(list)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        //集合中的数据元素 integer
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 快速创建1个被观察者对象
+     * 直接发送，传入的数组数据
+     * 会讲数组中的数据转换为observable对象
+     */
+    private void rxjavaFromArray() {
+        //应用场景
+        //1。快速创建被观察者对象 并且 发送10个以上事件-数组形式
+        //2。数组元素遍历
+
+        //第一步创建传入数组
+        Integer[] items = {0, 1, 2, 3, 4};
+        //第二部创建被观察者并传入数组
+        Observable.fromArray(items)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        //数据中的元素为integer
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * rxjava just方法
+     * 等同onNext
+     */
+    private void rxjavaJust() {
+        //最多只能发送10个参数
+        Observable.just(1, 2, 3, 4, 5)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        //数据中的元素为integer
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * RXJAVA creat方法
+     */
+    private void rxjavaCreat() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                emitter.onNext(1);
+                emitter.onNext(2);
+                emitter.onNext(3);
+                emitter.onComplete();
+            }
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                //开始采用subscribe连接
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                //接收到事件
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                //对error事件作出响应
+            }
+
+            @Override
+            public void onComplete() {
+                //对complete事件作出响应
+            }
+        });
+    }
+```
