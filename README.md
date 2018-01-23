@@ -20,3 +20,10 @@
 ```        
 
 ## [变换操作符](https://github.com/Thor-jelly/StudyRxjava/blob/master/%E5%8F%98%E6%8D%A2%E6%93%8D%E4%BD%9C%E7%AC%A6.md)
+
+```
+        map;
+        flatMap;
+        concatMap;
+        buffer;
+```
