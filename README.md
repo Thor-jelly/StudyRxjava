@@ -27,3 +27,22 @@
         concatMap;
         buffer;
 ```
+
+# [组合/合并操作符](https://github.com/Thor-jelly/StudyRxjava/blob/master/%E7%BB%84%E5%90%88-%E5%90%88%E5%B9%B6%E6%93%8D%E4%BD%9C%E7%AC%A6.md)
+
+```
+        concat;
+        concatArray;
+        merge;
+        mergeArray;
+        concat;
+        concatArrayDelayError;
+        mergeDelayError;
+        zip;
+        combineLatest;
+        reduce;
+        collect;
+        startWith;
+        startWithArray;
+        count;
+```
