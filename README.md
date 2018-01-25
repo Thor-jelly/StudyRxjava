@@ -39,8 +39,7 @@
         concatArrayDelayError;//第1个被观察者的Error事件将在第2个被观察者发送完事件后再继续发送,mergeDelayError（）操作符同理
         mergeDelayError;
         zip;//严格按照原先事件序列 进行对位合并,最终合并的事件数量 = 多个被观察者（Observable）中数量最少的数量
-        combineLatest;//当两个Observables中的任何一个发送了数据后，将先发送了数据的Observables 的最新（最后）一个数据
-                        与 另外一个Observable发送的每个数据结合，最终基于该函数的结果发送数据,与reduce区别就是接收的事件是每次都有而reduce只有最                        后一次输出信息
+        combineLatest;//当两个Observables中的任何一个发送了数据后，将先发送了数据的Observables 的最新（最后）一个数据与 另外一个Observable发送的每个数据结合，最终基于该函数的结果发送数据,与reduce区别就是接收的事件是每次都有而reduce只有最后一次输出信息
         reduce;//把前2个数据聚合，然后与后1个数据继续进行聚合，依次类推
         collect;//将被观察者Observable发送的数据事件收集到一个数据结构里
         startWith;//在一个被观察者发送事件前，追加发送一些数据/ 一个新的被观察者, 后调用的startWith先追加
