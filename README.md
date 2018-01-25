@@ -15,6 +15,7 @@
         never;
         defer;
         timer;
+        interval;
         intervalRange;
         range;
 ```        
