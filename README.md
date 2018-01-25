@@ -46,3 +46,14 @@
         startWithArray;
         count;
 ```
+
+## [功能性操作符](https://github.com/Thor-jelly/StudyRxjava/blob/master/%E5%8A%9F%E8%83%BD%E6%80%A7%E6%93%8D%E4%BD%9C%E7%AC%A6.md)  
+
+```
+        delay;
+        do;
+        retry;
+        retryWhen;
+        repeat;
+        repeatWhen;
+```
