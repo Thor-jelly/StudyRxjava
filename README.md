@@ -76,3 +76,16 @@
         lastElement；//获取最后一个事件
         elementAt；//获取指定位置事件，如果超出位置没有任何提示，如果需要提示则调用elementAtOrError()，如超出位置需要指定默认值则调用elementAt 2个参数的方法
 ```
+
+## [布尔操作符](https://github.com/Thor-jelly/StudyRxjava/blob/master/%E5%B8%83%E5%B0%94%E6%93%8D%E4%BD%9C%E7%AC%A6.md)
+
+```
+    takeWhile;判断发送的每项数据是否满足设置的函数条件
+    skipWhile;跳过满足条件的那些数据，发送不满足那些条件的数据
+    takeUntil;Predicate参数时：执行到条件成立时，停止发送事件，但本次事件会发送出去;observable参数时：第二个observable开始发送数据时，原始的observable停止发送事件
+    sequenceEqual;判定两个Observables需要发送的数据是否相同
+    contains;判断发送的数据中是否包含指定数据
+    isEmpty;判断发送的数据是否为空
+    defaultIfEmpty;在不发送任何有效事件（ Next事件）、仅发送了 Complete 事件的前提下，发送一个默认值
+    amb;当需要发送多个 Observable时，只发送 先发送数据的Observable的数据，而其余 Observable则被丢弃
+```
